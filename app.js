@@ -3,12 +3,31 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "API Documentation",
+      description: "API Documentation description",
+      contact: {
+        name: "Tesi",
+        email: "tesiroblesmarin@gmail.com"
+      }
+    },
+  },
+  apis: ["./routes/*.js"]
+}
+
+const specs = swaggerJsDoc(swaggerOptions);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
